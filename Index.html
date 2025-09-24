@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Mthobeli Portfolio</title>
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkfZ5G3Z8i1B+Q2TGK8mH0C1Jw7KxQFfU5VJ2G3bR0xK1Y9w2ZrjW0Z2Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- Particles.js -->
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+
+  <style>
+    /* ============================
+       CSS Variables & Base Styles
+       ============================ */
+    :root{
+      --bg:#0a192f;
+      --bg-elev:#0f2647;
+      --accent:#64ffda;
+      --text:#e6f1ff;
+      --muted:#a8b2d1;
+      --shadow: 0 10px 30px -10px rgba(2,12,27,0.7);
+      --card-shadow: 0 8px 24px rgba(2,12,27,0.35);
+      --radius: 16px;
+      --radius-lg: 20px;
+      --maxw: 1100px;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:var(--text);
+      background:linear-gradient(180deg, #081327 0%, var(--bg) 100%);
+      min-height:100vh;
+    }
+    img{max-width:100%; max-height:100%; display:block}
+    a{color:inherit; text-decoration:none}
+    
+    /* ============================
+       Layout
+       ============================ */
+    .layout{
+      display:grid;
+      grid-template-columns: 240px 1fr;
+      min-height:100vh;
+    }
+
+    /* Sidebar Navigation */
+    .sidebar{
+      position:sticky;
+      top:0; height:100vh; 
+      background:rgba(10,25,47,0.8);
+      backdrop-filter: blur(8px);
+      border-right:1px solid rgba(100,255,218,0.15);
+      padding:24px 16px;
+      display:flex; flex-direction:column; gap:24px;
+    }
+    .brand{
+      font-family:"Fira Code", monospace;
+      font-weight:700; letter-spacing:0.5px;
+      font-size:22px; color:var(--accent);
+      display:flex; align-items:center; gap:8px;
+    }
+    .brand i{font-size:20px}
+
+    .nav{
+      margin-top:8px;
+      display:flex; flex-direction:column; gap:8px; position:relative;
+    }
+    .nav a{
+      padding:10px 12px; border-radius:12px;
+      color:var(--muted); font-weight:600; letter-spacing:0.3px;
+      display:flex; align-items:center; gap:10px; 
+      transition:transform .2s ease, background-color .2s ease, color .2s ease;
+    }
+    .nav a:hover{ background:rgba(100,255,218,0.08); color:var(--text); transform:translateX(4px)}
+    .nav a.active{ color:var(--accent); background:rgba(100,255,218,0.12)}
+
+    .nav-indicator{
+      position:absolute; left:-2px; width:3px; border-radius:3px; background:var(--accent);
+      transition: top .25s ease, height .25s ease, opacity .25s ease;
+      opacity:.8;
+    }
+
+    /* Mobile topbar */
+    .topbar{display:none; position:sticky; top:0; z-index:50; background:rgba(10,25,47,0.85); backdrop-filter:blur(8px); border-bottom:1px solid rgba(100,255,218,0.15)}
+    .topbar .row{display:flex; align-items:center; justify-content:space-between; padding:12px 16px}
+    .hamburger{font-size:22px; color:var(--accent); border:1px solid rgba(100,255,218,0.35); padding:8px 10px; border-radius:10px}
+
+    /* Drawer for mobile nav */
+    .drawer{position:fixed; inset:0; display:none;}
+    .drawer.open{display:block}
+    .drawer .overlay{position:absolute; inset:0; background:rgba(0,0,0,0.55)}
+    .drawer .panel{
+      position:absolute; left:0; top:0; height:100%; width:78%; max-width:300px;
+      background:var(--bg); border-right:1px solid rgba(100,255,218,0.2); padding:20px; 
+      animation:slideIn .25s ease both;
+    }
+    @keyframes slideIn{from{transform:translateX(-12px); opacity:0} to{transform:none; opacity:1}}
+
+    /* Content */
+    main{width:100%;}
+    section{
+      padding:96px 24px; 
+      position: relative;
+      overflow: hidden;
+    }
+    .container{max-width:var(--maxw); margin:0 auto}
+
+    /* Cards & common elements */
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(100,255,218,0.15);
+      border-radius:var(--radius);
+      box-shadow: var(--card-shadow);
+      position: relative;
+      z-index: 1;
+    }
+    .badge{
+      display:inline-block; padding:6px 10px; border-radius:999px; border:1px solid rgba(100,255,218,0.35); color:var(--accent); font-size:12px; letter-spacing:.3px; margin:2px 6px 2px 0
+    }
+    .section-title{
+      font-family:"Fira Code", monospace; font-size:28px; margin:0 0 24px; color:var(--accent);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Particles containers */
+    .particles-container {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      opacity: 0.7;
+    }
+    
+    /* Section-specific particle adjustments */
+    #hero .particles-container { opacity: 1.85; }
+    #about .particles-container { opacity: 1.3; }
+    #skills .particles-container { opacity: 0.5; }
+    #projects .particles-container { opacity: 0.4; }
+    #contact .particles-container { opacity: 2.55; }
+
+    /* ============================
+       Hero Section
+       ============================ */
+    #hero{padding-top:0; min-height:80vh; display:flex; align-items:center; margin-left: -70px; overflow:hidden}
+    .hero-inner{position:relative; z-index:1; display:grid; gap:11px}
+    .greeting{color:var(--accent); font-family:"Fira Code", monospace; letter-spacing:.6px}
+    .name{font-family:"Fira Code", monospace; font-weight:700; font-size: clamp(36px, 6vw, 72px); line-height:1.05; margin:0}
+    .tagline{font-size: clamp(16px, 2.4vw, 22px); color:var(--muted)}
+    .cta-row{display:flex; gap:14px; flex-wrap:wrap; margin-top:10px}
+    .btn{
+      display:inline-flex; align-items:center; gap:8px; padding:12px 18px; border-radius:999px;
+      border:1px solid var(--accent); color:var(--accent); font-weight:700; letter-spacing:.3px;
+      transition: transform .2s ease, background .2s ease, box-shadow .2s ease;
+    }
+    .btn:hover{ background:rgba(100,255,218,0.1); transform:translateY(-2px); box-shadow:0 8px 24px rgba(100,255,218,0.18)}
+
+    /* ============================
+       About Section
+       ============================ */
+    .about-grid{display:grid; grid-template-columns: 260px 1fr; gap:21px}
+    .about-image{border-radius:var(--radius-lg); overflow:hidden; border:1px solid rgba(100,255,218,0.25)}
+    .about-card{padding:22px}
+    .about-details{display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap:10px; margin-top:14px}
+    .about-details div{padding:12px; border:1px dashed rgba(100,255,218,0.25); border-radius:12px; color:var(--muted)}
+    .socials{display:flex; gap:12px; margin-top:14px}
+    .icon-btn{width:40px; height:40px; display:inline-flex; align-items:center; justify-content:center; border-radius:10px; border:1px solid rgba(100,255,218,0.35); color:var(--accent)}
+    .icon-btn:hover{background:rgba(100,255,218,0.08)}
+
+    /* ============================
+       Skills Section
+       ============================ */
+    .skills-grid{display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap:18px}
+    .skill{padding:16px 18px}
+    .skill h4{margin:0 0 8px}
+    .progress{
+      width:100%; height:10px; background:rgba(100,255,218,0.12); border-radius:999px; overflow:hidden; border:1px solid rgba(100,255,218,0.15)
+    }
+    .bar{height:100%; width:0%; background: linear-gradient(90deg, rgba(100,255,218,0.6), rgba(100,255,218,1)); border-radius:999px; transition: width 1s ease}
+    .skill h4 {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: #e6f1ff;
+        font-size: 1rem;
+        }
+
+        .skill h4 .percent {
+        color: #64ffda;
+        font-weight: 500;
+        font-family: 'Fira Code', monospace;
+        }
+
+    /* ============================
+       Projects Section
+       ============================ */
+    .projects-grid{display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap:18px}
+    .project{overflow:hidden; display:flex; flex-direction:column}
+    .project img{width:100%; aspect-ratio: 16/10; object-fit:cover}
+    .project .content{padding:16px}
+    .project .title{margin:2px 0 8px; font-weight:800}
+    .project .desc{color:var(--muted); font-size:15px}
+    .project .actions{display:flex; gap:10px; margin-top:12px}
+    .project:hover{transform:translateY(-4px); box-shadow:0 16px 36px rgba(2,12,27,.45)}
+    .project{transition: transform .2s ease, box-shadow .2s ease}
+
+    /* ============================
+       Contact Section
+       ============================ */
+    form.contact{display:grid; gap:12px; max-width:680px}
+    .field{display:grid; gap:8px}
+    .input, textarea{
+      width:100%; padding:12px 14px; border-radius:12px; background:rgba(255,255,255,0.02);
+      border:1px solid rgba(100,255,218,0.25); color:var(--text); outline:none;
+    }
+    textarea{min-height:140px; resize:vertical}
+    .error{color:#ff7a7a; font-size:13px}
+    .submit-btn{position:relative}
+    .spinner{position:absolute; right:14px; top:50%; transform:translateY(-50%); width:18px; height:18px; border:2px solid var(--accent); border-top-color:transparent; border-radius:50%; animation:spin 1s linear infinite; display:none}
+    @keyframes spin{to{transform:translateY(-50%) rotate(360deg)}}
+
+    /* Scroll reveal animations */
+    .reveal{opacity:0; transform: translateY(14px); transition: opacity .6s ease, transform .6s ease}
+    .reveal.show{opacity:1; transform:none}
+
+    /* Footer */
+    footer{padding:36px 24px; text-align:center; color:var(--muted); position:relative; z-index:1}
+
+    /* Responsive */
+    @media (max-width: 1024px){
+      .layout{grid-template-columns: 200px 1fr}
+      .projects-grid{grid-template-columns: repeat(2, minmax(0,1fr))}
+      .about-grid{grid-template-columns: 1fr}
+    }
+    @media (max-width: 840px){
+      .layout{grid-template-columns: 1fr}
+      .sidebar{display:none}
+      .topbar{display:block}
+      section{padding:80px 18px}
+      .skills-grid{grid-template-columns: 1fr}
+      .projects-grid{grid-template-columns: 1fr}
+    }
+  </style>
+</head>
+<body>
+  <!-- Mobile Topbar -->
+  <div class="topbar">
+    <div class="row">
+      <div class="brand"><i class="fa-solid fa-code"></i> Mthobeli
+    </div>
+      <button class="hamburger" id="openDrawer" aria-label="Open navigation"><i class="fa-solid fa-bars"></i></button>
+    </div>
+  </div>
+
+  <!-- Mobile Drawer -->
+  <div class="drawer" id="drawer">
+    <div class="overlay" id="closeDrawer"></div>
+    <div class="panel">
+      <div class="brand" style="margin-bottom:12px"><i class="fa-solid fa-code"></i> Menu</div>
+      <nav class="nav">
+        <a href="#hero" class="nav-link"><i class="fa-solid fa-house"></i> Home</a>
+        <a href="#about" class="nav-link"><i class="fa-solid fa-user"></i> About</a>
+        <a href="#skills" class="nav-link"><i class="fa-solid fa-screwdriver-wrench"></i> Skills</a>
+        <a href="#projects" class="nav-link"><i class="fa-solid fa-diagram-project"></i> Projects</a>
+        <a href="#contact" class="nav-link"><i class="fa-solid fa-paper-plane"></i> Contact</a>
+      </nav>
+    </div>
+  </div>
+
+  <div class="layout">
+
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="brand"><i class="fa-solid fa-code"></i> Dev.Portfolio</div>
+      <nav class="nav" id="sideNav">
+        <span class="nav-indicator" id="navIndicator" style="top:6px;height:40px"></span>
+        <a href="#hero" class="nav-link"><i class="fa-solid fa-house"></i> Home</a>
+        <a href="#about" class="nav-link"><i class="fa-solid fa-user"></i> About</a>
+        <a href="#skills" class="nav-link"><i class="fa-solid fa-screwdriver-wrench"></i> Skills</a>
+        <a href="#projects" class="nav-link"><i class="fa-solid fa-diagram-project"></i> Projects</a>
+        <a href="#contact" class="nav-link"><i class="fa-solid fa-paper-plane"></i> Contact</a>
+      </nav>
+      <div style="margin-top:auto; color:var(--muted); font-size:13px">© <span id="year"></span> Mthobeli Ndzobole</div>
+    </aside>
+
+    <main>
+      <!-- Hero -->
+      <section id="hero">
+        <div class="particles-container" id="particles-hero"></div>
+        <div class="container hero-inner">
+          <div class="greeting">Hi, my name is</div>
+          <h1 class="name" id="typewriter" aria-label="Mthobeli Ndzobole">Mthobeli Ndzobole</h1>
+          <p class="tagline">
+            I am an ambitious and resourceful Full-Stack Developer with a strong foundation<br>
+             in Python, Django, REST APIs, SQL, HTML, CSS, and JavaScript.<br> With over three years of hands-on experience
+             spanning technical support,<br>ICT administration, and software development, I specialize in building scalable,<br> user-friendly web applications that solve real-world problems
+          <div class="cta-row">
+            <a class="btn" href="#projects"><i class="fa-solid fa-arrow-down"></i> View Projects</a>
+            <a class="btn" href="asstets/Mthobeli Ndzobole_Resume.pdf" download><i class="fa-solid fa-file-arrow-down"></i> Download Resume</a>
+          </div>
+        </div>
+      </section>
+      
+      <!-- About -->
+      <section id="about">
+        <div class="particles-container" id="particles-about"></div>
+        <div class="container">
+          <h2 class="section-title">/ About</h2>
+          <div class="about-grid">
+            <div class="about-image card reveal">
+              <img src="images/Img.jpg" alt="Profile placeholder" />
+            </div>
+            <div class="about-card card reveal">
+              <div>
+                <p style="color:var(--muted); line-height:1.8">
+                  I'm a passionate developer focused on crafting fast, accessible, and human-centered products. I enjoy solving problems end‑to‑end—from pixels to databases—and I’m always learning new tools to level up the experience.
+                </p>
+                <div class="about-details">
+                  <div><strong>Email:</strong><br/> Mthobeligee@.com</div>
+                  <div><strong>Location:</strong><br/><p style="margin: 0;">Durban,KwaZulu Natal <span style="color: #248f77;">• Open to Relocation</span></p></div>
+                  <div><strong>Education:</strong><br/> DIPLOMA IN ICT</div>
+                  <div><strong>Open to Work:</strong><br/> Yes</div>
+                </div>
+                <div class="socials">
+                  <a class="icon-btn" href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                  <a class="icon-btn" href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                  <a class="icon-btn" href="#" aria-label="Twitter"><i class="fab fa-x-twitter"></i></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Skills -->
+      <section id="skills">
+        <div class="particles-container" id="particles-skills"></div>
+        <div class="container">
+          <h2 class="section-title">/ Skills</h2>
+          <div class="skills-grid">
+            <div class="card skill reveal">
+              <h4>Python Django</h4><span class="percent">80%</span>
+              <div class="progress"><div class="bar" data-skill="80"></div></div>
+            </div>
+            <div class="card skill reveal">
+              <h4>SQL</h4><span class="percent">65%</span>
+              <div class="progress"><div class="bar" data-skill="65"></div></div>
+            </div>
+            <div class="card skill reveal">
+              <h4>JavaScript</h4><span class="percent">50%</span>
+              <div class="progress"><div class="bar" data-skill="50"></div></div>
+            </div>
+            <div class="card skill reveal">
+              <h4>HTML & CSS</h4><span class="percent">85%</span>
+              <div class="progress"><div class="bar" data-skill="85"></div></div>
+            </div>
+            <div class="card skill reveal">
+              <h4>C#</h4><span class="percent">50%</span>
+              <div class="progress"><div class="bar" data-skill="50"></div></div>
+            </div>
+            <div class="card skill reveal">
+              <h4>React Native</h4><span class="percent"> 45%<span style="color: #248f77;">• Just started learning React Native</span></span>
+              <div class="progress"><div class="bar" data-skill="70"></div></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Projects -->
+      <section id="projects">
+        <div class="particles-container" id="particles-projects"></div>
+        <div class="container">
+          <h2 class="section-title">/ Projects</h2>
+          <div class="projects-grid">
+            <article class="project card reveal">
+              <img src="" alt="Project 1"/>
+              <div class="content">
+                <div class="title">Mobile Application</div>
+                <div class="badges">
+                  <span class="badge">Python</span>
+                   <span class="badge">PostgreSQL</span>
+                  <span class="badge">React Native</span>
+                  <span class="badge">JavaScript.js</span>
+                  <span class="badge">Django RESTframework</span>
+                 
+
+                </div>
+                <p class="desc">A Mobile delivery app that allows customers to browse, 
+                  ordering, and tracking products with real-time updates,
+                   secure login, personalized dashboards, and a seamless user experience.</p>
+                <div class="actions">
+                  <a class="btn" href="#"><i class="fa-brands fa-github"></i> Code</a>
+                  <a class="btn" href="#"><i class="fa-solid fa-up-right-from-square"></i> Preview</a>
+                </div>
+              </div>
+            </article>
+
+            <article class="project card reveal">
+              <img src="Images/Umg.png" alt="Project 2"/>
+              <div class="content">
+                <div class="title">Graduates Placement System</div>
+                <div class="badges">
+                  <span class="badge">Python</span>
+                  <span class="badge">Django RESTframework</span>
+                  <span class="badge">JavaScript.js</span>
+                </div>
+                <p class="desc">A developer directory with search, filters, and profile pages sourced from an external API.</p>
+                <div class="actions">
+                  <a class="btn" href="#"><i class="fa-brands fa-github"></i> Code</a>
+                  <a class="btn" href="#"><i class="fa-solid fa-up-right-from-square"></i> Preview</a>
+                </div>
+              </div>
+            </article>
+
+            <article class="project card reveal">
+              <img src="images/colors.png" alt="Project 3"/>
+              <div class="content">
+                <div class="title">Colours Application System</div>
+                <div class="badges">
+                  <span class="badge">Python</span>
+                  <span class="badge">Django RESTframework</span>
+                  <span class="badge">JavaScript.js</span>
+                </div>
+                <p class="desc">Analytics dashboard showing KPIs and charts with CSV import and scheduled email reports.</p>
+                <div class="actions">
+                  <a class="btn" href="#"><i class="fa-brands fa-github"></i> Code</a>
+                  <a class="btn" href="https://colours.kznsc.com/"><i class="fa-solid fa-up-right-from-square"></i> Preview</a>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- Contact -->
+      <section id="contact">
+        <div class="particles-container" id="particles-contact"></div>
+        <div class="container">
+          <h2 class="section-title">/ Contact</h2>
+          <form class="contact card reveal" id="contactForm" novalidate>
+            <div class="field">
+              <label for="name">Name</label>
+              <input class="input" type="text" id="name" name="name" placeholder="Your name" required />
+              <div class="error" data-error-for="name"></div>
+            </div>
+            <div class="field">
+              <label for="email">Email</label>
+              <input class="input" type="email" id="email" name="email" placeholder="you@example.com" required />
+              <div class="error" data-error-for="email"></div>
+            </div>
+            <div class="field">
+              <label for="message">Message</label>
+              <textarea id="message" name="message" placeholder="Tell me about your project..." required></textarea>
+              <div class="error" data-error-for="message"></div>
+            </div>
+            <button type="submit" class="btn submit-btn">Send Message <span class="spinner" id="spinner"></span></button>
+            <div id="formStatus" class="error" style="display:none"></div>
+          </form>
+        </div>
+      </section>
+
+      <footer>
+        Built with by Mthobeli.Ndzobole using HTML, CSS, and JavaScript.
+      </footer>
+    </main>
+  </div>
+
+  <script>
+    // ============================
+    // Year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // ============================
+    // Particles.js Configuration
+    const particlesConfig = {
+      particles: {
+        number: {
+          value: 35,
+          density: {
+            enable: true,
+            value_area: 800
+          }
+        },
+        color: { value: '#64ffda' },
+        shape: { type: 'circle' },
+        opacity: {
+          value: 0.5,
+          random: true,
+        },
+        size: {
+          value: 3,
+          random: true,
+        },
+        line_linked: {
+          enable: true,
+          distance: 120,
+          color: '#64ffda',
+          opacity: 0.2,
+          width: 1
+        },
+        move: {
+          enable: true,
+          speed: 1.5,
+          direction: 'none',
+          out_mode: 'out'
+        }
+      },
+      interactivity: {
+        detect_on: 'canvas',
+        events: {
+          onhover: {
+            enable: true,
+            mode: 'grab'
+          },
+          onclick: {
+            enable: true,
+            mode: 'push'
+          }
+        },
+        modes: {
+          grab: {
+            distance: 140,
+            line_linked: {
+              opacity: 0.35
+            }
+          },
+          push: {
+            particles_nb: 3
+          }
+        }
+      },
+      retina_detect: true
+    };
+
+    // Initialize particles for each section
+    const sections = ['hero', 'about', 'skills', 'projects', 'contact'];
+    
+    sections.forEach(section => {
+      particlesJS(`particles-${section}`, particlesConfig);
+    });
+
+    // ============================
+    // Typewriter Effect (for name)
+    const typeEl = document.getElementById('typewriter');
+    const fullText = 'Mthobeli Ndzobole'; // <-- change to your name
+    let i = 0;
+    function type(){
+      if(i <= fullText.length){
+        typeEl.textContent = fullText.slice(0, i);
+        i++;
+        setTimeout(type, 100);
+      }
+    }
+    type();
+
+    // ============================
+    // Smooth Scrolling (enhanced for older browsers)
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const href = a.getAttribute('href');
+        if(href.length > 1){
+          e.preventDefault();
+          document.querySelector(href).scrollIntoView({behavior:'smooth'});
+          // Close drawer if open
+          drawer.classList.remove('open');
+        }
+      });
+    });
+
+    // ============================
+    // Scroll Reveal + Skills animation
+    const observer = new IntersectionObserver((entries)=>{
+      entries.forEach(entry=>{
+        if(entry.isIntersecting){
+          entry.target.classList.add('show');
+          // Animate bars inside skills cards
+          const bars = entry.target.querySelectorAll('.bar');
+          bars.forEach(bar=>{
+            const pct = bar.dataset.skill || 0;
+            requestAnimationFrame(()=>{ bar.style.width = pct + '%'; });
+          });
+        }
+      });
+    },{threshold:0.2});
+    document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+
+    // ============================
+    // Sidebar ScrollSpy + indicator
+    const links = Array.from(document.querySelectorAll('.sidebar .nav .nav-link'));
+    const indicator = document.getElementById('navIndicator');
+
+    function setActiveLink(id){
+      const link = links.find(l => l.getAttribute('href') === `#${id}`);
+      if(!link) return;
+      links.forEach(l=>l.classList.remove('active'));
+      link.classList.add('active');
+      const rect = link.getBoundingClientRect();
+      const navRect = link.parentElement.getBoundingClientRect();
+      indicator.style.top = (rect.top - navRect.top) + 'px';
+      indicator.style.height = rect.height + 'px';
+    }
+
+    const sectionElements = ['hero','about','skills','projects','contact'].map(id=>document.getElementById(id));
+    const spy = new IntersectionObserver((entries)=>{
+      entries.forEach(entry=>{
+        if(entry.isIntersecting){ setActiveLink(entry.target.id); }
+      })
+    },{root:null, threshold:0.55});
+    sectionElements.forEach(s=>spy.observe(s));
+
+    // ============================
+    // Mobile drawer toggle
+    const drawer = document.getElementById('drawer');
+    document.getElementById('openDrawer').addEventListener('click', ()=> drawer.classList.add('open'));
+    document.getElementById('closeDrawer').addEventListener('click', ()=> drawer.classList.remove('open'));
+
+    // ============================
+    // Contact form validation + fake submit
+    const form = document.getElementById('contactForm');
+    const spinner = document.getElementById('spinner');
+    const status = document.getElementById('formStatus');
+
+    function showError(name, msg){
+      const el = document.querySelector(`[data-error-for="${name}"]`);
+      if(el){ el.textContent = msg || ''; }
+    }
+
+    function validate(){
+      let valid = true;
+      const name = form.name.value.trim();
+      const email = form.email.value.trim();
+      const message = form.message.value.trim();
+
+      showError('name',''); showError('email',''); showError('message','');
+
+      if(name.length < 2){ showError('name','Please enter your name.'); valid=false; }
+      const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email);
+      if(!emailOk){ showError('email','Enter a valid email address.'); valid=false; }
+      if(message.length < 10){ showError('message','Message should be at least 10 characters.'); valid=false; }
+      return valid;
+    }
+
+    form.addEventListener('submit', (e)=>{
+      e.preventDefault();
+      status.style.display='none'; status.textContent='';
+      if(!validate()) return;
+
+      // Loading state
+      spinner.style.display='inline-block';
+      form.querySelector('button[type="submit"]').setAttribute('disabled', 'disabled');
+
+      // Simulated async send
+      setTimeout(()=>{
+        spinner.style.display='none';
+        form.querySelector('button[type="submit"]').removeAttribute('disabled');
+        form.reset();
+        status.style.display='block';
+        status.style.color = 'var(--accent)';
+        status.textContent = 'Thanks! Your message has been sent.';
+      }, 1200);
+    });
+  </script>
+</body>
+</html>
