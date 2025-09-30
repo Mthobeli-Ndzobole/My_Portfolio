@@ -239,11 +239,15 @@
       line-height:1.1; 
       margin:0;
     }
-    .tagline{
-      font-size: clamp(16px, 2.5vw, 22px); 
-      color:var(--muted);
+    .tagline {
+      font-size: 1.2rem;
       line-height: 1.6;
-      max-width: 700px;
+    }
+    .tagline strong {
+      font-size: 1.4rem;
+      color: #9fa6ae;
+      display: block;
+      margin-bottom: 0.5rem;
     }
     .cta-row{
       display:flex; 
@@ -326,38 +330,42 @@
        ============================ */
     .skills-grid{
       display:grid; 
-      grid-template-columns: repeat(2, minmax(0,1fr)); 
+      grid-template-columns: repeat(3, minmax(0,1fr)); 
       gap:20px;
     }
-    .skill{
-      padding:18px;
+    .skill-category {
+      padding: 20px;
     }
-    .skill h4{
-      margin:0 0 12px;
+    .skill-category h3 {
+      font-family: "Fira Code", monospace;
+      color: var(--accent);
+      margin-bottom: 16px;
+      font-size: 1.2rem;
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      gap: 8px;
     }
-    .progress{
-      width:100%; 
-      height:10px; 
-      background:rgba(100,255,218,0.12);      
-      border-radius:999px; 
-      overflow:hidden; 
-      border:1px solid rgba(100,255,218,0.15);
+    .skill-category h3 i {
+      font-size: 1.1rem;
     }
-    .bar{
-      height:100%; 
-      width:0%; 
-      background: linear-gradient(90deg, rgba(100,255,218,0.6), rgba(100,255,218,1)); 
-      border-radius:999px; 
-      transition: width 1s ease;
+    .skill-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
     }
-    .skill h4 .percent {
-      color: #64ffda;
-      font-weight: 500;
-      font-family: 'Fira Code', monospace;
+    .skill-item {
+      background: rgba(100,255,218,0.08);
+      border: 1px solid rgba(100,255,218,0.2);
+      border-radius: 8px;
+      padding: 8px 12px;
       font-size: 0.9rem;
+      color: var(--muted);
+      transition: all 0.3s ease;
+    }
+    .skill-item:hover {
+      background: rgba(100,255,218,0.12);
+      transform: translateY(-2px);
+      color: var(--text);
     }
     
     /* ============================
@@ -521,6 +529,9 @@
       .layout{
         grid-template-columns: 200px 1fr;
       }
+      .skills-grid{
+        grid-template-columns: repeat(2, minmax(0,1fr));
+      }
       .projects-grid{
         grid-template-columns: repeat(2, minmax(0,1fr));
       }
@@ -656,7 +667,7 @@
       }
       
       /* Skills section small mobile */
-      .skill {
+      .skill-category {
         padding: 16px;
       }
       
@@ -742,12 +753,12 @@
         <div class="container hero-inner">
           <div class="greeting">Hi, my name is</div>
           <h1 class="name" id="typewriter" aria-label="Mthobeli Ndzobole">Mthobeli Ndzobole</h1>
-          <p class="tagline">
-            I am an ambitious and resourceful Full-Stack Developer with a strong foundation
-            in Python, Django, REST APIs, SQL, HTML, CSS, and JavaScript. With over three years of hands-on experience
-            spanning technical support, ICT administration, and software development, I specialize in building scalable,
-            user-friendly web applications that solve real-world problems.
-          </p>
+          <div class="tagline">
+            <p class="tagline">
+              <strong>Full-Stack Developer building scalable, user-friendly web applications.</strong>
+              I leverage deep full-stack expertise to create robust digital solutions that are not just functional, but truly reliable and maintainable.
+            </p>
+          </div>
           <div class="cta-row">
             <a class="btn" href="#projects"><i class="fa-solid fa-arrow-down"></i> View Projects</a>
             <a class="btn" href="asstets/Mthobeli Ndzobole_Resume.pdf" download><i class="fa-solid fa-file-arrow-down"></i> Download Resume</a>
@@ -767,7 +778,9 @@
             <div class="about-card card reveal">
               <div>
                 <p style="color:var(--muted); line-height:1.8">
-                  I'm a passionate developer focused on crafting fast, accessible, and human-centered products. I enjoy solving problems end‑to‑end—from pixels to databases—and I'm always learning new tools to level up the experience.
+                  My journey into development began in technical support, where I saw firsthand what makes software truly reliable and user-friendly. 
+                  That front-line experience is now my foundation: I build scalable, user-focused web applications with Python and Django,
+                  ensuring they are as robust under the hood as they are intuitive on the surface.
                 </p>
                 <div class="about-details">
                   <div><strong>Email:</strong><br/> Mthobeligee@.com</div>
@@ -792,29 +805,32 @@
         <div class="container">
           <h2 class="section-title">/ Skills</h2>
           <div class="skills-grid">
-            <div class="card skill reveal">
-              <h4>Python Django</h4><span class="percent">80%</span>
-              <div class="progress"><div class="bar" data-skill="80"></div></div>
+            <div class="card skill-category reveal">
+              <h3><i class="fa-solid fa-server"></i> Backend & Databases</h3>
+              <div class="skill-list">
+                <div class="skill-item">Python</div>
+                <div class="skill-item">Django & Django REST Framework</div>
+                <div class="skill-item">RESTful API Development</div>
+                <div class="skill-item">PostgreSQL / MySQL</div>
+                <div class="skill-item">SQL & Database Design</div>
+              </div>
             </div>
-            <div class="card skill reveal">
-              <h4>SQL</h4><span class="percent">65%</span>
-              <div class="progress"><div class="bar" data-skill="65"></div></div>
+            <div class="card skill-category reveal">
+              <h3><i class="fa-solid fa-code"></i> Frontend Development</h3>
+              <div class="skill-list">
+                <div class="skill-item">JavaScript (ES6+)</div>
+                <div class="skill-item">HTML5 & CSS3</div>
+                <div class="skill-item">React Native</div>
+              </div>
             </div>
-            <div class="card skill reveal">
-              <h4>JavaScript</h4><span class="percent">50%</span>
-              <div class="progress"><div class="bar" data-skill="50"></div></div>
-            </div>
-            <div class="card skill reveal">
-              <h4>HTML & CSS</h4><span class="percent">85%</span>
-              <div class="progress"><div class="bar" data-skill="85"></div></div>
-            </div>
-            <div class="card skill reveal">
-              <h4>C#</h4><span class="percent">50%</span>
-              <div class="progress"><div class="bar" data-skill="50"></div></div>
-            </div>
-            <div class="card skill reveal">
-              <h4>React Native</h4><span class="percent">45%<span style="color: #64ffda;">• Just started learning</span></span>
-              <div class="progress"><div class="bar" data-skill="45"></div></div>
+            <div class="card skill-category reveal">
+              <h3><i class="fa-solid fa-gears"></i> DevOps & Tools</h3>
+              <div class="skill-list">
+                <div class="skill-item">Git & GitHub / GitLab</div>
+                <div class="skill-item">Deployment & DevOps Fundamentals</div>
+                <div class="skill-item">Linux / Command Line</div>
+                <div class="skill-item">Agile Methodologies</div>
+              </div>
             </div>
           </div>
         </div>
@@ -827,7 +843,7 @@
           <h2 class="section-title">/ Projects</h2>
           <div class="projects-grid">
             <article class="project card reveal">
-              <img src="" alt="Mobile Application" />
+              <img src="Images/app1.png" alt="Mobile Application" />
               <div class="content">
                 <div class="title">Mobile Application</div>
                 <div class="badges">
@@ -855,7 +871,8 @@
                   <span class="badge">Django RESTframework</span>
                   <span class="badge">JavaScript.js</span>
                 </div>
-                <p class="desc">A developer directory with search, filters, and profile pages sourced from an external API.</p>
+                <p class="desc">After identifying bottlenecks in our manual student placement process, I designed and developed a centralized Django web application. 
+                  This platform streamlines collaboration between graduates and employers, featuring a searchable database of candidate profiles to dramatically improve placement efficiency.</p>
                 <div class="actions">
                   <a class="btn" href="#"><i class="fa-brands fa-github"></i> Code</a>
                   <a class="btn" href="#"><i class="fa-solid fa-up-right-from-square"></i> Preview</a>
@@ -871,7 +888,9 @@
                   <span class="badge">Django RESTframework</span>
                   <span class="badge">JavaScript.js</span>
                 </div>
-                <p class="desc">Analytics dashboard showing KPIs and charts with CSV import and scheduled email reports.</p>
+                <p class="desc">Developed a full-stack web application using Python and Django to streamline data management for federation representatives at major sporting events.
+                   Collaborated with stakeholders to deliver a secure, 
+                  scalable solution that met specific event planning requirements through agile methodologies.</p>
                 <div class="actions">
                   <a class="btn" href="#"><i class="fa-brands fa-github"></i> Code</a>
                   <a class="btn" href="https://colours.kznsc.com/"><i class="fa-solid fa-up-right-from-square"></i> Preview</a>
@@ -1023,12 +1042,6 @@
       entries.forEach(entry=>{
         if(entry.isIntersecting){
           entry.target.classList.add('show');
-          // Animate bars inside skills cards
-          const bars = entry.target.querySelectorAll('.bar');
-          bars.forEach(bar=>{
-            const pct = bar.dataset.skill || 0;
-            requestAnimationFrame(()=>{ bar.style.width = pct + '%'; });
-          });
         }
       });
     },{threshold:0.15});
